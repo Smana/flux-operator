@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: flux
+spec:
+  replicas: {{ default 1 .Values.fluxOperator.replicas | int }}
+  selector:
+    matchLabels:
+      name: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ default "quay.io/repository/dailymotionadmin/flux-operator" .Values.fluxOperator.containers.fluxOperator.image }}:{{ default "latest" .Values.fluxOperator.imageTag }}
+          imagePullPolicy: Always
+          resources:
+{{ toYaml .Values.fluxOperator.containers.fluxOperator.resources | indent 12 }}
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "{{ .Release.Name }}"
+      imagePullSecrets:
+        - name: dailymotionadmin-puller-pull-secret

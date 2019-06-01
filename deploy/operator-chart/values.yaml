@@ -1,0 +1,12 @@
+
+fluxOperator:
+  containers:
+    fluxOperator:
+      image: "quay.io/dailymotionadmin/flux-operator"
+      imagePullPolicy: "IfNotPresent"
+      resources:
+        limits:
+          memory: 300Mi
+          cpu: 300m
+  replicas: 1
+  imageTag: "latest"

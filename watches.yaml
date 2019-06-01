@@ -1,5 +1,5 @@
 ---
 - version: v1alpha1
-  group: example.com
-  kind: Nginx
-  chart: /opt/helm/helm-charts/nginx
+  group: smana.dev
+  kind: Flux
+  chart: /opt/helm/helm-charts/flux

@@ -1,0 +1,13 @@
+apiVersion: v1
+name: flux-operator
+version: 0.0.1
+description: Manage Weaveworks Flux instances
+keywords:
+- gitops
+- flux
+sources:
+- https://gitlab.dm.gg/docker/flux-operator
+maintainers:
+- name: Smana
+  email: smainklh@gmail.com
+engine: gotpl
