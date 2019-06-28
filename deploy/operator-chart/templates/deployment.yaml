@@ -16,7 +16,7 @@ spec:
       serviceAccountName: {{ .Release.Name }}
       containers:
         - name: {{ .Release.Name }}
-          image: {{ default "quay.io/repository/dailymotionadmin/flux-operator" .Values.fluxOperator.containers.fluxOperator.image }}:{{ default "latest" .Values.fluxOperator.imageTag }}
+          image: {{ required "Image name" .Values.fluxOperator.containers.fluxOperator.image }}:{{ default "latest" .Values.fluxOperator.imageTag }}
           imagePullPolicy: Always
           resources:
 {{ toYaml .Values.fluxOperator.containers.fluxOperator.resources | indent 12 }}
@@ -31,5 +31,8 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "{{ .Release.Name }}"
-      imagePullSecrets:
-        - name: dailymotionadmin-puller-pull-secret
+          securityContext:
+            runAsUser: 12323
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]

@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: flux-operator
 subjects:
 - kind: ServiceAccount
@@ -16,49 +16,20 @@ kind: ServiceAccount
 metadata:
   name: {{ .Release.Name }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
 metadata:
-  creationTimestamp: null
   name: flux-operator
+  labels:
+    release: {{ .Release.Name }}
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  - services
-  - endpoints
-  - persistentvolumeclaims
-  - events
-  - configmaps
-  - secrets
-  verbs:
-  - '*'
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  - daemonsets
-  - replicasets
-  - statefulsets
-  verbs:
-  - '*'
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  - secrets
-  verbs:
-  - '*'
-- apiGroups:
-  - example.com
-  resources:
-  - '*'
-  verbs:
-  - '*'
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - nonResourceURLs:
+      - '*'
+    verbs:
+      - '*'

@@ -7,15 +7,16 @@ spec:
     url: git@github.com:Smana/flux-get-started.git
     branch: master
     path: "flux/smana-cluster"
+    secretName: "flux-get-started-ssh"
   helmOperator:
+    allowNamespace: "demo"
     create: true
     createCRD: false
-    allowNamespace: "default"
     tillerNamespace: flux
     tls:
       verify: true
       enable: true
-      hostname: tiller-deploy.flux
+      hostname: tiller-deploy.smana.dev
   additionalArgs:
   - --git-sync-tag=smana-cluster
   memcached:
